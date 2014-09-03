@@ -1,5 +1,9 @@
 ## v0.8.1 [unreleased]
 
+### Features
+
+- [Issue #896](https://github.com/influxdb/influxdb/issues/896). Init-script redirects "stdout" to syslog.
+
 ### Bugfixes
 
 ## v0.8.0 [2014-08-22]

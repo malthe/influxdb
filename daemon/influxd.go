@@ -34,7 +34,7 @@ func setupLogging(loggingLevel, logFile string) {
 	if logFile == "stdout" {
 		flw := log.NewConsoleLogWriter()
 		log.AddFilter("stdout", level, flw)
-
+		flw.SetFormat("[%L] (%S) %M")
 	} else {
 		logFileDir := filepath.Dir(logFile)
 		os.MkdirAll(logFileDir, 0744)

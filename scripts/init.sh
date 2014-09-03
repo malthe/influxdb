@@ -73,6 +73,9 @@ config=/opt/$name/shared/config.toml
 # If the daemon is not there, then exit.
 [ -x $daemon ] || exit 5
 
+# Redirect stdout to syslog
+exec > >(logger -t influxdb)
+
 case $1 in
     start)
         # Checked the PID file exists and check the actual status of process
@@ -90,7 +93,7 @@ case $1 in
         # Log the message appropriately
         cd /
         if which start-stop-daemon > /dev/null 2>&1; then
-            nohup start-stop-daemon --chuid influxdb:influxdb -d / --start --quiet --oknodo --pidfile $pidfile --exec $daemon -- -pidfile $pidfile -config $config > /dev/null 2>&1 &
+            start-stop-daemon --chuid influxdb:influxdb -d / --start --quiet --oknodo --background --no-close --pidfile $pidfile --startas `which bash` -- -c "exec $daemon -pidfile $pidfile -config $config 2>&1 | logger -p daemon.info -t influxdb"
         elif set | egrep '^start_daemon' > /dev/null 2>&1; then
             start_daemon -u influxdb ${daemon}-daemon -pidfile $pidfile -config $config
         else

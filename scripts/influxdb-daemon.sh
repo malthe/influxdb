@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-nohup /usr/bin/influxdb "$@" > /dev/null 2>&1 &
+nohup sh -c "/usr/bin/influxdb $@ | logger -p daemon.info -t influxdb" &
